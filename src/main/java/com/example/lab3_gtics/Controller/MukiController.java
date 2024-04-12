@@ -36,6 +36,7 @@ public class MukiController {
         mina.setNumBombas(Integer.parseInt(numBombas));
 
         //(1,2) (2,3) (1,3)
+        /*
         String[] position = "\\s".split(posiciones);
         int filaBomba ;
         ArrayList<String> lista = new ArrayList<String>();
@@ -49,13 +50,11 @@ public class MukiController {
         int columna = 0 ;
         while(fila<=(mina.getNumFilas()-1)){
             while (columna<=(mina.getNumColumnas())-1){
-                if(Integer.parseInt()){
 
-                }
                 columna++;
             }
             fila++;
-        }
+        }*/
 
 
         model.addAttribute("mina",mina);
