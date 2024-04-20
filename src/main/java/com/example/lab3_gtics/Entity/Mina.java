@@ -15,5 +15,5 @@ public class Mina {
     private int [][] posiciones;
     private String[][] estadoMina;
     private int fallas = 0;
-    private Boolean perdio= false;
+    private Boolean gano= false;
 }

@@ -149,14 +149,36 @@ public class MukiController {
 
             mina.setPosiciones(matriz);
 
+            //Verificacion por si es que gano
+            int celdasDescubiertas= 0;
+            int celdasOcultas= 0;
+            int bombaOculta= 0;
+            int bombaDescubierta= 0;
+            for(int i =0;i<mina.getNumFilas() ; i++){
+                for(int j =0 ; j<mina.getNumColumnas(); j++){
+                    if(matriz[i][j] < 0){
+                        celdasDescubiertas++;
+                    }
+                    if(matriz[i][j] > 0){
+                        celdasOcultas++;
+                    }
+                    if(matriz[i][j] > 0 && matriz[i][j]==20){
+                        bombaOculta++;
+                    }
+                    if(matriz[i][j] < 0 && matriz[i][j]==-20){
+                        bombaDescubierta++;
+                    }
+                }
+            }
+            //Puede ganar si solo quedan celdas de bombas
+
+
         }else{
             //Escoge bomba
             matriz[fila][columna] = matriz[fila][columna]*(-1);
             mina.setPosiciones(matriz);
             mina.setFallas(mina.getFallas()+1);
-            if(mina.getFallas()>=mina.getNumIntentos()){
-                mina.setPerdio(true);
-            }
+
         }
 
         //LLAMEN A DIOS
