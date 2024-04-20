@@ -12,6 +12,8 @@ public class Mina {
     private int numColumnas;
     private int numIntentos;
     private int numBombas;
-    private ArrayList<String> posiciones;
-    private ArrayList<ArrayList<String>> minaGrande;
+    private int [][] posiciones;
+    private String[][] estadoMina;
+    private int intentos;
+    private int fallas;
 }

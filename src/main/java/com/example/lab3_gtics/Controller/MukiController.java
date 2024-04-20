@@ -13,7 +13,8 @@ import java.util.ArrayList;
 @Controller
 public class MukiController {
     @GetMapping("/buscaminas")
-    public String nuevo() {
+    public String nuevo()
+    {
         return "FormularioInicio";
     }
 
@@ -27,35 +28,77 @@ public class MukiController {
             Model model
     ) {
         System.out.println(filas + "  " + columnas + " " + posiciones +  intentos + numBombas );
-        /*System.out.println("nombre recibido = " + nombre);
-        */
+
        Mina mina =  new Mina();
         mina.setNumFilas(Integer.parseInt(filas));
         mina.setNumColumnas(Integer.parseInt(columnas));
         mina.setNumIntentos(Integer.parseInt(intentos));
         mina.setNumBombas(Integer.parseInt(numBombas));
-
-        //(1,2) (2,3) (1,3)
-        /*
-        String[] position = "\\s".split(posiciones);
-        int filaBomba ;
-        ArrayList<String> lista = new ArrayList<String>();
-        for(String i: position){
-            lista.add((String.valueOf(i.charAt(1) + i.charAt(3))));
-        }
-        mina.setPosiciones(lista);
-        ArrayList<ArrayList<String>> minaGrande ;
-        int counterLista = 1;
-        int fila = 0 ;
-        int columna = 0 ;
-        while(fila<=(mina.getNumFilas()-1)){
-            while (columna<=(mina.getNumColumnas())-1){
-
-                columna++;
+        //Debemos sacar las coordenadas
+        char caracter;
+        ArrayList<Integer> listaNum=  new ArrayList<>();
+        for(int i=0 ; i< posiciones.length() ; i++){
+            caracter = posiciones.charAt(i);
+            try{
+                listaNum.add(Integer.parseInt(String.valueOf(caracter))-1);
+                //System.out.println(caracter);
+            }catch(NumberFormatException e) {
+                continue;
             }
-            fila++;
+        }
+        //Ahora debemos asignar esos valores a las posiciones , en este caso propondremos dos estados como números para las celdas de la matriz
+        //los números corresponderán a la cantidad de bombas que estarán a su alrededor
+        int [][] matriz =  new int[mina.getNumFilas()][mina.getNumColumnas()];
+        for(int i = 1;  i<=(listaNum.toArray().length)/2 ; i++){
+            matriz[listaNum.get(2*i-2)][listaNum.get(2*i-1)] = 20;
+        }
+
+        /*
+        for(int i=0;  i<mina.getNumFilas(); i++){
+            for(int j=0;  j<mina.getNumColumnas(); j++) {
+                System.out.println(matriz[i][j]);
+            }
         }*/
 
+        int counter= 0;
+        for(int i=0;  i<mina.getNumFilas(); i++){
+            for(int j=0;  j<mina.getNumColumnas(); j++){
+                if(matriz[i][j]!=20) {
+                    counter = 0;
+                    //Recorremos elementos contiguos
+                    for (int k = i - 1; k <= i + 1; k++) {
+                        for (int h = j - 1; h <= j + 1; h++) {
+                            if ((k >= 0 && k <= mina.getNumFilas() - 1) && (h >= 0 && h <= mina.getNumFilas() - 1)) {
+                                if (h != k) {
+                                    if (matriz[k][h] == 20) {
+                                        counter++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    matriz[i][j] = counter;
+                }
+            }
+        }
+        mina.setPosiciones(matriz);
+
+        //Ahora seteamos estados como string
+        String[][] matrizEstado = new String[mina.getNumFilas()][mina.getNumColumnas()];
+        for(int i=0;  i<mina.getNumFilas(); i++){
+            for(int j=0;  j<mina.getNumColumnas(); j++) {
+                matrizEstado[i][j] = "Oculto";
+            }
+        }
+        mina.setEstadoMina(matrizEstado);
+
+        /*
+        for(int i=0;  i<mina.getNumFilas(); i++){
+            for(int j=0;  j<mina.getNumColumnas(); j++) {
+                System.out.println(matriz[i][j]);
+            }
+        }
+*/
 
         model.addAttribute("mina",mina);
         return "juego";
@@ -63,6 +106,7 @@ public class MukiController {
 
     @PostMapping("/minar")
     public String minar() {
+        //LLAMEN A DIOS
         return "juego";
     }
 
