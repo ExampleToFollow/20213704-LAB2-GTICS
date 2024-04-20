@@ -171,14 +171,14 @@ public class MukiController {
                 }
             }
             //Puede ganar si solo quedan celdas de bombas
-
-
+            if(celdasOcultas<=mina.getNumBombas()  && mina.getFallas()<mina.getNumIntentos()){
+                mina.setGano(true);
+            }
         }else{
             //Escoge bomba
             matriz[fila][columna] = matriz[fila][columna]*(-1);
             mina.setPosiciones(matriz);
             mina.setFallas(mina.getFallas()+1);
-
         }
 
         //LLAMEN A DIOS

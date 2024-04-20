@@ -72,6 +72,9 @@
     <h1 th:if="${mina.getFallas()>=mina.getNumIntentos()}">
         Usted ha perdido el juego!
     </h1>
+    <h1 th:if="${mina.getGano()}">
+        Usted ha ganado el juego!
+    </h1>
 
 
 </div>
