@@ -52,6 +52,8 @@ public class MukiController {
         }
 
         int counter= 0;
+
+
         for(int i=0;  i<mina.getNumFilas(); i++){
             for(int j=0;  j<mina.getNumColumnas(); j++){
                 if(matriz[i][j]!=20) {
@@ -59,8 +61,8 @@ public class MukiController {
                     //Recorremos elementos contiguos
                     for (int k = i - 1; k <= i + 1; k++) {
                         for (int h = j - 1; h <= j + 1; h++) {
-                            if ((k >= 0 && k <= mina.getNumFilas() - 1) && (h >= 0 && h <= mina.getNumFilas() - 1)) {
-                                if (h != k) {
+                            if ((k >= 0 && k <= mina.getNumFilas() - 1) && (h >= 0 && h <= mina.getNumColumnas() - 1) ) {
+                                if (h != i || k !=j) {
                                     if (matriz[k][h] == 20) {
                                         counter++;
                                     }
@@ -70,8 +72,14 @@ public class MukiController {
                     }
                     matriz[i][j] = counter;
                 }
+
+            }
+        }
+
+        for(int i = 0 ;i<mina.getNumFilas() ; i++){
+            for(int j= 0;j<mina.getNumColumnas() ; j++){
                 if(matriz[i][j]==0){
-                    matriz[i][j] = 30;
+                    matriz[i][j]= 30;
                 }
             }
         }
@@ -126,34 +134,13 @@ public class MukiController {
                 }
             }
 
-            /*
-            for (int i = 0; i < mina.getNumFilas(); i++) {
-                for (int j = 0; j < mina.getNumColumnas(); j++) {
-                    if (matriz[i][j] != 20) {
-                        //Recorremos elementos contiguos
-                        for (int k = i - 1; k <= i + 1; k++) {
-                            for (int h = j - 1; h <= j + 1; h++) {
-                                if ((k >= 0 && k <= mina.getNumFilas() - 1) && (h >= 0 && h <= mina.getNumFilas() - 1)) {
-                                    if (h != k) {
-                                        if (k == fila && h == columna) {
-                                            matriz[k][h] = matriz[k][h]*(-1);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            */
 
             mina.setPosiciones(matriz);
 
             //Verificacion por si es que gano
             int celdasDescubiertas= 0;
             int celdasOcultas= 0;
-            int bombaOculta= 0;
-            int bombaDescubierta= 0;
+
             for(int i =0;i<mina.getNumFilas() ; i++){
                 for(int j =0 ; j<mina.getNumColumnas(); j++){
                     if(matriz[i][j] < 0){
@@ -162,12 +149,7 @@ public class MukiController {
                     if(matriz[i][j] > 0){
                         celdasOcultas++;
                     }
-                    if(matriz[i][j] > 0 && matriz[i][j]==20){
-                        bombaOculta++;
-                    }
-                    if(matriz[i][j] < 0 && matriz[i][j]==-20){
-                        bombaDescubierta++;
-                    }
+
                 }
             }
             //Puede ganar si solo quedan celdas de bombas
