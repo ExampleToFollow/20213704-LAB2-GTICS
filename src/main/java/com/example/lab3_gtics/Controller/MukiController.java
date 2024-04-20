@@ -3,13 +3,11 @@ package com.example.lab3_gtics.Controller;
 import com.example.lab3_gtics.Entity.Mina;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-
+@SessionAttributes("mina")
 @Controller
 public class MukiController {
     @GetMapping("/buscaminas")
@@ -105,7 +103,49 @@ public class MukiController {
     }
 
     @PostMapping("/minar")
-    public String minar() {
+    public String minar(@RequestParam("posicion") String posicion,
+                        @ModelAttribute("mina") Mina mina
+                        ) {
+        char caracter;
+        ArrayList<Integer> listaNum=  new ArrayList<>();
+        for(int i=0 ; i< posicion.length() ; i++){
+            caracter = posicion.charAt(i);
+            try{
+                listaNum.add(Integer.parseInt(String.valueOf(caracter))-1);
+                //System.out.println(caracter);
+            }catch(NumberFormatException e) {
+                continue;
+            }
+        }
+        int fila = listaNum.get(0);
+        int columna = listaNum.get(1);
+
+
+
+        int [][] matriz = mina.getPosiciones();
+        String [][] matrizEstado =  mina.getEstadoMina();
+        int counter= 0;
+        for(int i=0;  i<mina.getNumFilas(); i++){
+            for(int j=0;  j<mina.getNumColumnas(); j++){
+                if(matriz[i][j]!=20) {
+                    //Recorremos elementos contiguos
+                    for (int k = i - 1; k <= i + 1; k++) {
+                        for (int h = j - 1; h <= j + 1; h++) {
+                            if ((k >= 0 && k <= mina.getNumFilas() - 1) && (h >= 0 && h <= mina.getNumFilas() - 1)) {
+                                if (h != k) {
+                                    if (k==fila && h==columna ) {
+                                        matrizEstado[i][j]="Descubierto";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        mina.setEstadoMina(matrizEstado);
         //LLAMEN A DIOS
         return "juego";
     }

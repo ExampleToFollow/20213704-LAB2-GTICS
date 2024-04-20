@@ -14,6 +14,6 @@ public class Mina {
     private int numBombas;
     private int [][] posiciones;
     private String[][] estadoMina;
-    private int intentos;
-    private int fallas;
+    private int intentos = 0;
+    private int fallas = 0;
 }
