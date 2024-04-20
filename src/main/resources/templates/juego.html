@@ -31,6 +31,10 @@
             background-color: #558f51;
             color:#558f51;
         }
+        .Descubierto2 {
+            background-color: #558f51;
+            color: #1738be;
+        }
         .DescubiertoBomba {
             background-color: #ca56e3;
         }
@@ -54,7 +58,7 @@
     <tr th:each="fila : ${mina.getPosiciones()}">
         <th:block th:each="elemento : ${fila}">
             <td th:text="${elemento}"   class ="Oculto" th:if="${elemento>0}" ></td>
-            <td th:text="${elemento*(-1)}"   class ="Descubierto" th:if="${elemento<0  && elemento !=-20 && elemento !=-30 }" ></td>
+            <td th:text="${elemento*(-1)}"   class ="Descubierto2" th:if="${elemento<0  && elemento !=-20 && elemento !=-30 }" ></td>
             <td   th:text="${elemento}" class ="Descubierto" th:if="${elemento ==-30 }" ></td>
             <td   class ="DescubiertoBomba" th:if="${elemento==-20}" ></td>
         </th:block>
@@ -62,7 +66,9 @@
     </tbody>
 </table>
 <div>
-
+    <h1 th:text="'Usted encontró ' + ${mina.fallas} + ' bombas. Le quedan ' + (${mina.numIntentos - mina.fallas}) + ' intentos.'"
+        th:if="${mina.fallas != 0 and mina.fallas < mina.numIntentos}">
+    </h1>
     <h1 th:if="${mina.getFallas()>=mina.getNumIntentos()}">
         Usted ha perdido el juego!
     </h1>
